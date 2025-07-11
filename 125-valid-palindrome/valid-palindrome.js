@@ -2,26 +2,27 @@
  * @param {string} s
  * @return {boolean}
  */
-var isPalindrome = function(s) {
-    l = 0
-    r = s.length -1
-    while (l <= r){
-        while (l < r && !alunum(s[l])){
-            l++;
-        }
-        while (r > l && ! alunum(s[r])){
-            r--;
-        }
-        if (s[l].toLowerCase() != s[r].toLowerCase()){
-            return false
-        }
-        l++
-        r--
+var isPalindrome = function (s) {
+    let l = 0
+    let r = s.length - 1;
+
+    while (l <= r) {
+        console.log(s[l], s[r])
+        while (l<r && !alphanumeric(s[l])) l++
+        while (l<r && !alphanumeric(s[r])) r--;
+        if (s[l].toLowerCase() != s[r].toLowerCase()) return false;
+
+        l++;
+        r--;
+
     }
-    return true
+    return true;
 };
-const alunum =(c)=>{
-    return ((c >= "A" && c<= "Z")||
-    (c >= "a" && c<= "z")||
-    (c >= "0" && c<= "9"))
+const alphanumeric = (r) => {
+    if ((r >= "a" && r <= "z") || (r >= "A" && r <= "Z") || (r >= "0" && r <= "9")) {
+        return true
+    }
+    else {
+        return false;
+    }
 }
