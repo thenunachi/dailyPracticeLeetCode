@@ -9,7 +9,7 @@ var minimumCardPickup = function(cards) {
     for(let r = 0; r < cards.length; r++){
         while(s.has(cards[r])){
            minLength = Math.min(minLength,r-l+1)
-           console.log(minLength,"m")
+        //    console.log(minLength,"m")
            s.delete(cards[l])
            l++
         }
