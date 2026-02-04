@@ -3,52 +3,42 @@
  * @return {number}
  */
 var maximumLength = function(s) {
-    let counts = {};
+    let low = 1, high = s.length;
+    let ans = -1;
 
-    // Step 1: Group consecutive characters into block lengths
-    let i = 0;
-    while (i < s.length) {
-        let char = s[i];
-        let start = i;
-        while (i < s.length && s[i] === char) {
-            i++;
-        }
-        let length = i - start;
+    while (low <= high) {
+        let mid = Math.floor((low + high) / 2);
         
-        if (!counts[char]) counts[char] = [];
-        counts[char].push(length);
-    }
-
-    let maxLen = -1;
-
-    // Step 2: For each character, find the best "Thrice" length
-    for (let char in counts) {
-        let L = counts[char].sort((a, b) => b - a);
-        
-        // Scenario 1: Three from the same longest block
-        // From [5], we can get three [3]s. (L[0] - 2)
-        let res1 = L[0] - 2;
-
-        // Scenario 2: Three from the top two blocks
-        // From [4, 3], we can get three [3]s.
-        let res2 = -1;
-        if (L.length >= 2) {
-            if (L[0] === L[1]) {
-                res2 = L[0] - 1;
-            } else {
-                res2 = L[1];
-            }
+        if (canFindThrice(s, mid)) {
+            ans = mid;    // This length works! 
+            low = mid + 1; // Try to find something even longer
+        } else {
+            high = mid - 1; // Too long, try shorter
         }
-
-        // Scenario 3: Three from the top three blocks
-        // From [2, 2, 2], we can get three [2]s.
-        let res3 = (L.length >= 3) ? L[2] : -1;
-
-        // Take the best of the 3 scenarios for this character
-        let bestForChar = Math.max(res1, res2, res3);
-        maxLen = Math.max(maxLen, bestForChar);
     }
-
-    // If maxLen is 0 or less, it means no substring appeared 3 times
-    return maxLen > 0 ? maxLen : -1;
+    return ans;
 };
+
+function canFindThrice(s, len) {
+    let counts = new Array(26).fill(0);
+    let i = 0;
+    
+    while (i < s.length) {
+        let j = i;
+        while (j < s.length && s[j] === s[i]) {
+            j++;
+        }
+        
+        let blockLen = j - i;
+        if (blockLen >= len) {
+            // Formula: a block of 5 has THREE substrings of length 3
+            // 5 - 3 + 1 = 3
+            let charIdx = s[i].charCodeAt(0) - 97;
+            counts[charIdx] += (blockLen - len + 1);
+            
+            if (counts[charIdx] >= 3) return true;
+        }
+        i = j;
+    }
+    return false;
+}
