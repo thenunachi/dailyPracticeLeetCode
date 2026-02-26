@@ -3,26 +3,21 @@
  * @return {boolean}
  */
 var isPalindrome = function (s) {
+    let alpha = "abcdefghijklmnopqrstuvwxyz1234567890"
     let l = 0
-    let r = s.length - 1;
+    let r = s.length - 1
 
-    while (l <= r) {
-        console.log(s[l], s[r])
-        while (l<r && !alphanumeric(s[l])) l++
-        while (l<r && !alphanumeric(s[r])) r--;
-        if (s[l].toLowerCase() != s[r].toLowerCase()) return false;
+    while (l < r) {
+        let left = s[l].toLowerCase()
+        let right = s[r].toLowerCase()
+        if (!alpha.includes(left)) l++
+        else if (!alpha.includes(right)) r--
 
-        l++;
-        r--;
-
+        else {
+            if (left != right) return false
+            l++
+            r--
+        }
     }
     return true;
 };
-const alphanumeric = (r) => {
-    if ((r >= "a" && r <= "z") || (r >= "A" && r <= "Z") || (r >= "0" && r <= "9")) {
-        return true
-    }
-    else {
-        return false;
-    }
-}
